@@ -1,0 +1,181 @@
+*{
+
+    padding: 0;
+    margin:0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #74c69dff;
+}
+
+header{
+    padding: 25px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF;
+    border-bottom: solid 3px gray
+}
+
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    padding: 50px;
+    
+}
+
+main section.disponibilidad{
+    text-align: center;
+}
+
+main section.form{
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+main section.form form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+
+
+main section.form input,
+main section.form select{
+    padding: 8px;
+    border-radius: 50px;
+    text-align: center;
+    margin: 10px;;
+}
+
+main section.form textarea{
+    width: 300px;
+    height: 230px;
+    padding: 15px;
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+button, .btn-volver{
+    padding: 15px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    margin: 30px;
+    width: 350px;
+    background-color: #1b4332ff;
+    color: #FFF;
+    border-style: none;
+    cursor: pointer;
+}
+
+section.inquilinosCargados{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+section.inquilinosCargados div.card-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+div.card{
+    margin: 10px;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+div#divInquilinos{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+section.inquilinosCargados button.btn-danger{
+    width: 9rem;
+}
+
+div.finalizar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    height: 100vh;
+    text-align: center;
+}
+
+p.finalizar{
+    font-size: 1.3rem;
+    margin-bottom: 50px;
+}
+
+button.finalizar{
+    margin-top: 0px;
+}
+
+main section.finalizar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+main section.form,
+main section.inquilinosCargados,
+main section.finalizar{
+    display: none;
+}
+
+
+
+/* Dark Mode */
+
+.divDarkMode ul{
+    list-style-type: none;
+    padding:0;
+    margin:0;
+}
+
+body{
+    background-color: azure;
+    color: black;
+    transition: background-color 800ms ease;
+}
+
+.darkMode{
+    background-color: black;
+    color: azure;
+}
+
+
+header div ul li button.btnLightMode,
+header div ul li button.btnDarkMode{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 5%;
+    top: 1%;
+}
