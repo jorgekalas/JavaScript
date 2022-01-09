@@ -174,15 +174,40 @@ let botonInquilinos = $("#botonInquilinos")
 
             })       
         })
-        
+
     } else {
-        parrafoError.innerText = "El listado de inquilinos ya se encuentra actualizado"
+        $("#divInquilinos").empty();
+
+        $("#divInquilinos").append(
+            `<div class="card text-black bg-secondary mb-3" id="inquilino${indice}"
+                <div class="card-body" id="cardBody">
+                    <h5 class="card-title">${inquilino.nombre} ${inquilino.apellido}</h5>
+                    <p class="card-text">Edad: ${inquilino.edad} años</p>
+                    <p class="card-text">DNI: ${inquilino.dni}</p>
+                    <p class="card-text">Teléfono: ${inquilino.telefono}</p>
+                    <button class="btn btn-danger" id="boto${indice}">Borrar</button>
+                </div>
+            </div>`
+        );        
+                $(`#boto${indice}`).on('click', () => {
+
+
+                $(`#inquilino${indice}`).remove()
+                proximosInquilinos.splice(indice, 1)
+                localStorage.setItem('inquilinos', JSON.stringify(proximosInquilinos))
+            
+                Toastify({
+                    text: `❌ El inquilino ${inquilino.nombre} ${inquilino.apellido} ha sido eliminado`,
+                    className: "inquilinoEliminado",
+                    style: {
+                    background: "red",
+                    }
+                }).showToast();
+
+            })  
     }
     })
 
-
-
-let botonIngresarInquilino =$("#ingresarInquilino")
 
 $("#ingresarInquilino").on('click', () =>{
     Toastify({
@@ -243,7 +268,7 @@ function validacionForm(e){
 
         } else{
             $("#mensaje").append(
-                `<p> ¡Tenemos disponibilidad en la fecha seleccionada!🎉 </p>
+                `<p>🎉 ¡Tenemos disponibilidad en la fecha seleccionada!🎉 </p>
                 <p> Te invitamos a leer los pasos a continuación para realizar la reserva </p>
                 <button id="continuar"> Continuar </button>
                 `
@@ -336,9 +361,10 @@ $(()=>{
 $("#sectionFinalizar").on('click', (e) => {
     if(proximosInquilinos.length == 0){
         e.preventDefault();
-        $("#sectionFinalizar").append(
+        $("#divAlerta").empty();
+        $("#divAlerta").append(
             `
-            <p id="alerta"> Debés ingresar al menos un inquilino </p>
+                <p id="alerta"> Debés ingresar al menos un inquilino </p>
             `)
     }
 
@@ -361,7 +387,8 @@ $("#sectionFinalizar").on('click', (e) => {
                     $("#form").hide("slow");
                     $("#inquilinosCargados").hide("slow");
                     $("#buttonFinalizar").hide("slow");
-                    $("#alerta").hide("slow");
+                    $("#divAlerta").hide("slow");
+
         
                     localStorage.removeItem('inquilinos');
                     
