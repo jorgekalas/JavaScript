@@ -145,17 +145,17 @@ let botonInquilinos = $("#botonInquilinos")
     botonInquilinos.on('click', function(){
     if(divInquilinos.children().length == 0) {
     proximosInquilinos.forEach((inquilino, indice) =>{
-        console.log(indice);
+        console.log(proximosInquilinos);
         $("#divInquilinos").append(
             `<div class="card text-black bg-secondary mb-3" id="inquilino${indice}"
-            <div class="card-body" id="cardBody">
-            <h5 class="card-title">${inquilino.nombre} ${inquilino.apellido}</h5>
-            <p class="card-text">Edad: ${inquilino.edad} años</p>
-            <p class="card-text">DNI: ${inquilino.dni}</p>
-            <p class="card-text">Teléfono: ${inquilino.telefono}</p>
-            <button class="btn btn-danger" id="boto${indice}">Borrar</button>
-        </div>
-        </div>`
+                <div class="card-body" id="cardBody">
+                    <h5 class="card-title">${inquilino.nombre} ${inquilino.apellido}</h5>
+                    <p class="card-text">Edad: ${inquilino.edad} años</p>
+                    <p class="card-text">DNI: ${inquilino.dni}</p>
+                    <p class="card-text">Teléfono: ${inquilino.telefono}</p>
+                    <button class="btn btn-danger" id="boto${indice}">Borrar</button>
+                </div>
+            </div>`
         );        
                 $(`#boto${indice}`).on('click', () => {
 
@@ -174,10 +174,6 @@ let botonInquilinos = $("#botonInquilinos")
 
             })       
         })
-
-
-        
-        $
         
     } else {
         parrafoError.innerText = "El listado de inquilinos ya se encuentra actualizado"
@@ -198,16 +194,6 @@ $("#ingresarInquilino").on('click', () =>{
     }).showToast();
 })
 
-//Agregando una validación final para el caso que no se ingresen inquilinos
-
-let botonFinalizar = $("#finalizar")
-
-$("#finalizar").on('click', (e) => {
-    if(proximosInquilinos.length == 0){
-        e.preventDefault();
-        alert("Para completar la reserva, debe ingresar al menos un inquilino")
-    }
-})
 
 // animaciones
 
@@ -237,27 +223,69 @@ function validacionForm(e){
     e.preventDefault();
 
     let entrada = $("#fecha_entrada").val()
+    let entradaLocalDate= entrada.split("-").reverse().join("-")
+    let salida = $("#fecha_salida").val()
+    let salidaLocalDate= salida.split("-").reverse().join("-")
     let reservadaHasta = "2022-02-01"
 
+    if(entrada){
+            if(entrada < reservadaHasta){
+                $("#mensaje").append(
+                    `<p> La casa no se encuentra disponible para reservas durante el ${entradaLocalDate} y el ${salidaLocalDate}, por favor ingresá otra fecha. </p>
+                    <a href="index.html">
+                        <button id="volverAIntentarlo"> Volver a intentarlo </button>
+                    </a>
+                    `)
+                
+                $("#h2Disponibilidad").hide();
+                $("#formDisponibilidad").hide();
 
-    if(entrada < reservadaHasta){
-        alert('La casa se encuentra reservada en la fecha seleccionada, por favor ingresá otra fecha')
-} else{
-    $("#mensaje").append(
-        `<p> ¡Tenemos disponibilidad en la fecha seleccionada!🎉 </p>
-        <p> Te invitamos a leer los pasos a continuación para realizar la reserva </p>
-        <button id="continuar"> Continuar </button>
-        `
-    )
 
-    $('#continuar').on("click", () =>{
-        $("#form").fadeIn("slow");
-        $("#inquilinosCargados").fadeIn("slow");
-        $("#sectionFinalizar").fadeIn("slow");
-        $("#mensaje").hide();
-    })
+        } else{
+            $("#mensaje").append(
+                `<p> ¡Tenemos disponibilidad en la fecha seleccionada!🎉 </p>
+                <p> Te invitamos a leer los pasos a continuación para realizar la reserva </p>
+                <button id="continuar"> Continuar </button>
+                `
+            )
 
-}
+            $("#h2Disponibilidad").fadeOut("slow");
+            $("#formDisponibilidad").fadeOut("slow");
+
+            $('#continuar').on("click", () =>{
+                $("#form").fadeIn("slow");
+                $("#inquilinosCargados").fadeIn("slow");
+                $("#sectionFinalizar").fadeIn("slow");
+                $("#mensaje").hide();
+
+                $("#pasos").prepend(
+                    `
+                    <div id="fechaSeleccionada" class="fechaSeleccionada">
+                        <h5>Fecha seleccionada:</h5>
+                        <h6>Desde: ${entradaLocalDate}</h6>
+                        <h6>Hasta: ${salidaLocalDate}</h6>
+                    </div>
+                    `
+                )
+            })
+        }
+
+    } else {
+        $("#mensaje").append(
+            `<br>
+            <p> Por favor, ingresá una fecha válida.</p>
+            <a href="index.html">
+                <button id="volverAIntentarlo"> Volver a intentarlo </button>
+            </a>
+            `
+        )
+
+        $("#h2Disponibilidad").hide();
+        $("#formDisponibilidad").hide();
+        $("#botonDisponbilidad").hide();
+
+    }
+
 formDisponibilidad.trigger("reset");
 }
 
@@ -275,6 +303,7 @@ localStorage.setItem('darkMode', darkMode)
 
 $(()=>{
     if(localStorage.getItem('darkMode') == "dark"){
+        $("header").addClass("darkMode")
         $("body").addClass("darkMode")
         $("#btnDarkMode").hide();
         $("#btnLightMode").show();
@@ -302,34 +331,51 @@ $(()=>{
 })
 
 
-//AJAX
+//Finalizar - AJAX
 
-$('#buttonFinalizar').on('click', () =>{
-    $.post("https://jsonplaceholder.typicode.com/posts", JSON.stringify(proximosInquilinos), function(data, estado) {
-        console.log(data, estado)
-
-        if(estado === "success"){
-            $("#divFinalizar").append( `
-            <section>
-                <h3>🎉 ¡Reserva exitosa! 🎉</h3>
-                <br> <br>
-                <p class="p1 finalizar">A la brevedad nos pondremos en contacto para coordinar la seña y confirmar la reserva.</p>
-                <input type="button" class="btn-volver" value="Volver" onclick="location.reload()"/>
-                </section>
+$("#sectionFinalizar").on('click', (e) => {
+    if(proximosInquilinos.length == 0){
+        e.preventDefault();
+        $("#sectionFinalizar").append(
+            `
+            <p id="alerta"> Debés ingresar al menos un inquilino </p>
             `)
+    }
 
-            $("#sectionDisponibilidad").hide("slow");
-            $("#form").hide("slow");
-            $("#inquilinosCargados").hide("slow");
-            $("#buttonFinalizar").hide("slow");
-
-            localStorage.clear()
-            
-        }
-
-    })
+    else{
+        $('#buttonFinalizar').on('click', () =>{
+            $.post("https://jsonplaceholder.typicode.com/posts", JSON.stringify(proximosInquilinos), function(data, estado) {
+                console.log(data, estado);
+        
+                if(estado === "success"){
+                    $("#divFinalizar").append( `
+                    <section>
+                        <h3>🎉 ¡Reserva exitosa! 🎉</h3>
+                        <br> <br>
+                        <p class="p1 finalizar">A la brevedad nos pondremos en contacto para coordinar la seña y confirmar la reserva.</p>
+                        <input type="button" class="btn-volver" value="Volver" onclick="location.reload()"/>
+                        </section>
+                    `)
+        
+                    $("#sectionDisponibilidad").hide("slow");
+                    $("#form").hide("slow");
+                    $("#inquilinosCargados").hide("slow");
+                    $("#buttonFinalizar").hide("slow");
+                    $("#alerta").hide("slow");
+        
+                    localStorage.removeItem('inquilinos');
+                    
+                }
+        
+            })
+        })
+        
+        $('#buttonVolver').on('click', () =>{
+            location.reload();
+        })
+    }
 })
 
-$('#buttonVolver').on('click', () =>{
-    location.reload();
-})
+
+
+
