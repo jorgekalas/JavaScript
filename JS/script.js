@@ -150,9 +150,9 @@ let botonInquilinos = $("#botonInquilinos")
             `<div class="card text-black bg-secondary mb-3" id="inquilino${indice}"
                 <div class="card-body" id="cardBody">
                     <h5 class="card-title">${inquilino.nombre} ${inquilino.apellido}</h5>
-                    <p class="card-text">Edad: ${inquilino.edad} años</p>
-                    <p class="card-text">DNI: ${inquilino.dni}</p>
-                    <p class="card-text">Teléfono: ${inquilino.telefono}</p>
+                    <p class="parrafo-card card-text">Edad: ${inquilino.edad} años</p>
+                    <p class="parrafo-card card-text">DNI: ${inquilino.dni}</p>
+                    <p class="parrafo-card card-text">Teléfono: ${inquilino.telefono}</p>
                     <button class="btn btn-danger" id="boto${indice}">Borrar</button>
                 </div>
             </div>`
@@ -220,10 +220,12 @@ $("#ingresarInquilino").on('click', () =>{
 })
 
 
-// animaciones
+// Animaciones
 
 $("h1").prepend(`
-    <img id="logo" src="./img/logo.jpg" alt="logo">
+    <a href="index.html" class="anchorLogo">
+        <img id="logo" src="./img/logo.jpg" alt="logo">
+    </a>
 `)
 
 $("#logo").css("width", "100px")
@@ -238,7 +240,7 @@ $("#botonInquilinos").click(() => {
 })
 
 
-//disponibilidad
+//Disponibilidad
 
 
 let formDisponibilidad = $("#formDisponibilidad")
@@ -314,7 +316,63 @@ function validacionForm(e){
 formDisponibilidad.trigger("reset");
 }
 
-// botón dark mode
+
+//Finalizar  
+
+$("#sectionFinalizar").on('click', (e) => {
+    if(proximosInquilinos.length == 0){
+        e.preventDefault();
+        $("#divAlerta").empty();
+        $("#divAlerta").append(
+            `
+            <div class="mensajeAlerta" id="mensajeAlerta">
+                <span id="alerta"> Debés ingresar al menos un inquilino </span>
+                <i class="fas fa-check-circle" id="entendido"></i>
+            </div>
+            `)
+
+            $("#entendido").on('click', () =>{
+                $("#divAlerta").hide("slow");
+            }) 
+    }
+
+    else{
+        $('#buttonFinalizar').on('click', () =>{
+            $.post("https://jsonplaceholder.typicode.com/posts", JSON.stringify(proximosInquilinos), function(data, estado) {
+                console.log(data, estado);
+        
+                if(estado === "success"){
+                    $("#divFinalizar").append( `
+                    <section>
+                        <h3>🎉 ¡Reserva exitosa! 🎉</h3>
+                        <br> <br>
+                        <p class="p1 finalizar">A la brevedad nos pondremos en contacto para coordinar la seña y confirmar la reserva.</p>
+                        <input type="button" class="btn-volver" value="Volver" onclick="location.reload()"/>
+                        </section>
+                    `)
+        
+                    $("#sectionDisponibilidad").hide("slow");
+                    $("#form").hide("slow");
+                    $("#inquilinosCargados").hide("slow");
+                    $("#buttonFinalizar").hide("slow");
+                    $("#divAlerta").hide("slow");
+
+        
+                    localStorage.removeItem('inquilinos');
+                    
+                }
+        
+            })
+        })
+        
+        $('#buttonVolver').on('click', () =>{
+            location.reload();
+        })
+    }
+})
+
+
+// Dark mode
 
 let darkMode;
 
@@ -354,55 +412,6 @@ $(()=>{
     })
 
 })
-
-
-//Finalizar - AJAX
-
-$("#sectionFinalizar").on('click', (e) => {
-    if(proximosInquilinos.length == 0){
-        e.preventDefault();
-        $("#divAlerta").empty();
-        $("#divAlerta").append(
-            `
-                <p id="alerta"> Debés ingresar al menos un inquilino </p>
-            `)
-    }
-
-    else{
-        $('#buttonFinalizar').on('click', () =>{
-            $.post("https://jsonplaceholder.typicode.com/posts", JSON.stringify(proximosInquilinos), function(data, estado) {
-                console.log(data, estado);
-        
-                if(estado === "success"){
-                    $("#divFinalizar").append( `
-                    <section>
-                        <h3>🎉 ¡Reserva exitosa! 🎉</h3>
-                        <br> <br>
-                        <p class="p1 finalizar">A la brevedad nos pondremos en contacto para coordinar la seña y confirmar la reserva.</p>
-                        <input type="button" class="btn-volver" value="Volver" onclick="location.reload()"/>
-                        </section>
-                    `)
-        
-                    $("#sectionDisponibilidad").hide("slow");
-                    $("#form").hide("slow");
-                    $("#inquilinosCargados").hide("slow");
-                    $("#buttonFinalizar").hide("slow");
-                    $("#divAlerta").hide("slow");
-
-        
-                    localStorage.removeItem('inquilinos');
-                    
-                }
-        
-            })
-        })
-        
-        $('#buttonVolver').on('click', () =>{
-            location.reload();
-        })
-    }
-})
-
 
 
 

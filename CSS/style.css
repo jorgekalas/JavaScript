@@ -20,6 +20,10 @@ header{
     border-bottom: solid 3px gray
 }
 
+a:link, a:visited,a:active {
+    text-decoration:none;    
+}
+
 
 main{
     display: flex;
@@ -88,12 +92,6 @@ section.inquilinosCargados{
     text-align: center;
 }
 
-section.inquilinosCargados div.card-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
 div.card{
     margin: 10px;
@@ -101,18 +99,86 @@ div.card{
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     width: 200px;
+}
+
+p.parrafo-card{
+    margin: 0;
+    padding: 12px;
+    text-align: center;
 }
 
 div#divInquilinos{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    margin: 50px;
 }
 
 section.inquilinosCargados button.btn-danger{
     width: 9rem;
 }
+
+section.form h2{
+    margin-bottom: 50px;
+}
+
+section.form ol.pasos{
+    display: flex;
+    flex-direction: column;
+}
+
+section.form ol.pasos li{
+    list-style:none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+section.form ol.pasos p.paso{
+    margin-left: 100px;
+    font-style: italic;
+}
+
+section.form ol.pasos li::before{
+    content:"";
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border-radius: 50%;
+    color: #FFF;
+    background-color: #1b4332ff;
+    font-weight: 700;
+    text-align: center;
+    margin-right: 20px;
+}
+
+section.form ol.pasos li.one::before{
+    content: "1";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.form ol.pasos li.two::before{
+    content: "2";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.form ol.pasos li.three::before{
+    content: "3";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
 
 div.finalizar{
     display: flex;
@@ -127,6 +193,12 @@ p.finalizar{
     font-size: 1.2rem;
     margin-bottom: 50px;
 }
+
+i.fa-check-circle{
+    cursor: pointer;
+    font-size: 2rem;
+}
+
 
 button.finalizar{
     margin-top: 0px;
@@ -158,14 +230,14 @@ div.fechaSeleccionada{
 }
 
 body{
-    background-color: azure;
+    background-color:#F1FAEE;
     color: black;
     transition: background-color 800ms ease;
 }
 
 .darkMode{
     background-color: black;
-    color: azure;
+    color: #F1FAEE;
 }
 
 
