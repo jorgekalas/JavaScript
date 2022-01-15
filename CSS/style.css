@@ -36,6 +36,7 @@ main{
 
 main section.disponibilidad{
     text-align: center;
+    font-size: 1.2rem;
 }
 
 main section.form{
@@ -176,8 +177,6 @@ section.form ol.pasos li.three::before{
     justify-content: center;
     align-items: center;
 }
-
-
 
 
 div.finalizar{
